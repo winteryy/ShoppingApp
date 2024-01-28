@@ -1,15 +1,13 @@
-package com.winterry.presentation.ui.common
+package com.winterry.presentation.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -18,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -30,7 +29,6 @@ import com.winterry.domain.model.SalesStatus
 import com.winterry.domain.model.Shop
 import com.winterry.presentation.R
 import com.winterry.presentation.ui.theme.Purple40
-import com.winterry.presentation.ui.theme.Purple80
 
 @Composable
 fun ProductCard(product: Product, onClick: (Product) -> Unit?) {
@@ -45,7 +43,6 @@ fun ProductCard(product: Product, onClick: (Product) -> Unit?) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(320.dp)
                 .padding(10.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
@@ -53,9 +50,10 @@ fun ProductCard(product: Product, onClick: (Product) -> Unit?) {
             Image(
                 painter = painterResource(id = R.drawable.product_image),
                 contentDescription = "product image",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .wrapContentWidth(Alignment.End)
+                    .aspectRatio(1f)
             )
             Text(
                 fontSize = 14.sp,
@@ -135,29 +133,22 @@ private fun Price(product: Product) {
             Text(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                text = "${product.price.originPrice}"
+                text = "${product.price.originPrice}원"
             )
         }
 
         SalesStatus.ON_DISCOUNT -> {
             Text(
                 fontSize = 14.sp,
-                text = "${product.price.originPrice}",
+                text = "${product.price.originPrice}원",
                 textDecoration = TextDecoration.LineThrough
             )
-            Row {
-                Text(
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    text = "할인가: "
-                )
-                Text(
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Purple40,
-                    text = "${product.price.finalPrice}"
-                )
-            }
+            Text(
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Purple40,
+                text = "${product.price.finalPrice}원"
+            )
         }
 
         SalesStatus.SOLD_OUT -> {

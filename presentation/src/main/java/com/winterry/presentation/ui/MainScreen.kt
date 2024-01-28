@@ -2,7 +2,6 @@ package com.winterry.presentation.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Home
@@ -19,10 +18,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -30,7 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.winterry.presentation.R
+import com.winterry.presentation.ui.main.MainInsideScreen
 import com.winterry.presentation.ui.theme.ShoppingAppTheme
 import com.winterry.presentation.viewmodel.MainViewModel
 
@@ -64,7 +60,9 @@ fun MainScreen() {
         Column(
             modifier = Modifier.padding(it)
         ) {
-            MainNavigationScreen(navController = navController)
+            MainNavigationScreen(
+                viewModel = viewModel,
+                navController = navController)
         }
     }
 }
@@ -116,13 +114,13 @@ fun MainBottomNavigationBar(navController: NavHostController) {
 }
 
 @Composable
-fun MainNavigationScreen(navController: NavHostController) {
+fun MainNavigationScreen(viewModel: MainViewModel, navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = MainNavigationItem.Main.route,
         builder = {
             composable(MainNavigationItem.Main.route) {
-                Text("Hello Main")
+                MainInsideScreen(viewModel = viewModel)
             }
             composable(MainNavigationItem.Category.route) {
                 Text("Hello Category")
