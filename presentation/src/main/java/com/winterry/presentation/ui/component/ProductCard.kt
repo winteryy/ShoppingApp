@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,6 +31,7 @@ import com.winterry.domain.model.Shop
 import com.winterry.presentation.R
 import com.winterry.presentation.ui.theme.Purple40
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductCard(product: Product, onClick: (Product) -> Unit?) {
     Card(
@@ -38,7 +40,8 @@ fun ProductCard(product: Product, onClick: (Product) -> Unit?) {
             .fillMaxWidth()
             .height(intrinsicSize = IntrinsicSize.Max)
             .padding(10.dp)
-            .shadow(elevation = 10.dp)
+            .shadow(elevation = 10.dp),
+        onClick = { onClick(product) }
     ) {
         Column(
             modifier = Modifier
@@ -127,7 +130,7 @@ private fun PreviewProductCardSoldOut() {
 }
 
 @Composable
-private fun Price(product: Product) {
+fun Price(product: Product) {
     when (product.price.salesStatus) {
         SalesStatus.ON_SALE -> {
             Text(

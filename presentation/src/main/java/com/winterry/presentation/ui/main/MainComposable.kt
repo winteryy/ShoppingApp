@@ -19,11 +19,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.winterry.domain.model.Banner
 import com.winterry.domain.model.BannerList
+import com.winterry.domain.model.Carousel
 import com.winterry.domain.model.ModelType
 import com.winterry.domain.model.Product
 import com.winterry.presentation.R
 import com.winterry.presentation.ui.component.BannerCard
 import com.winterry.presentation.ui.component.BannerListCard
+import com.winterry.presentation.ui.component.CarouselCard
 import com.winterry.presentation.ui.component.ProductCard
 import com.winterry.presentation.viewmodel.MainViewModel
 
@@ -40,17 +42,21 @@ fun MainInsideScreen(viewModel: MainViewModel) {
             GridItemSpan(spanCount)
         }) {
             when (val item = modelList[it]) {
-                is Banner -> {
-                    BannerCard(model = item)
+                is Banner -> BannerCard(model = item) { model ->
+                    viewModel.openBanner(model)
                 }
 
-                is Product -> {
-                    ProductCard(product = item) {
-
-                    }
+                is Product -> ProductCard(product = item) { model ->
+                    viewModel.openProduct(model)
                 }
-                is BannerList -> {
-                    BannerListCard(model = item)
+
+                is BannerList -> BannerListCard(model = item) { model ->
+                    viewModel.openBannerList(model)
+                }
+
+
+                is Carousel -> CarouselCard(model = item) { model ->
+                    viewModel.openCarouselProduct(model)
                 }
             }
         }
@@ -58,8 +64,8 @@ fun MainInsideScreen(viewModel: MainViewModel) {
 }
 
 private fun getSpanCountByType(type: ModelType, defaultColumnCount: Int): Int {
-    return when(type) {
+    return when (type) {
         ModelType.PRODUCT -> 1
-        ModelType.BANNER, ModelType.BANNER_LIST -> defaultColumnCount
+        ModelType.BANNER, ModelType.BANNER_LIST, ModelType.CAROUSEL -> defaultColumnCount
     }
 }

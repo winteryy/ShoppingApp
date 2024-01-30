@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,9 +25,9 @@ import com.winterry.domain.model.BannerList
 import com.winterry.presentation.R
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun BannerListCard(model: BannerList) {
+fun BannerListCard(model: BannerList, onClick: (BannerList) -> Unit) {
     val pagerState = rememberPagerState()
     LaunchedEffect(key1 = pagerState) {
         autoScrollInfinity(pagerState)
@@ -37,8 +38,15 @@ fun BannerListCard(model: BannerList) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-                .shadow(20.dp)
+                .shadow(20.dp),
+            onClick = { onClick(model) }
         ) {
+            Box(
+                contentAlignment = Alignment.CenterEnd,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("pageNumber: $it")
+            }
             Image(
                 painter = painterResource(id = R.drawable.product_image),
                 contentDescription = "banner image",
@@ -47,12 +55,7 @@ fun BannerListCard(model: BannerList) {
                     .fillMaxWidth()
                     .aspectRatio(2f)
             )
-            Box(
-                contentAlignment = Alignment.TopEnd,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("pageNumber: $it")
-            }
+
         }
     }
 }
